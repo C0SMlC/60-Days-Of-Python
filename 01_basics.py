@@ -1,14 +1,13 @@
 print("Hello World")
 
 # Basic TODO
+with open("todos.txt", "r") as todosFile:
+    tasks = todosFile.readlines()
 
-file = open('todos.txt','r')
-tasks = file.readlines()
-file.close()
 
 def printList(tasks):
     for index, value in enumerate(tasks):
-        print(index + 1, value.strip('\n'))
+        print(index + 1, value.strip("\n"))
 
 
 while True:
@@ -19,20 +18,20 @@ while True:
         case "Add":
             task = input("Task: ")
             tasks.append(task)
-            file = open("todos.txt", 'w')
-            file.writelines(tasks)
-            file.close()
+            with open("todos.txt", "w") as file:
+                file.writelines(tasks)
+
         case "View":
             printList(tasks)
+
         case "Edit":
             try:
                 index = int(input("Enter the task index to edit: ")) - 1
                 if 0 <= index < len(tasks):
                     new_task = input("New Task: ") + "\n"
                     tasks[index] = new_task
-                    file = open("todos.txt", 'w')
-                    file.writelines(tasks)
-                    file.close()
+                    with open("todos.txt", "w", -1, "UTF-8") as file:
+                        file.writelines(tasks)
                 else:
                     print("Invalid index")
             except ValueError:
@@ -42,9 +41,8 @@ while True:
                 index = int(input("Enter the task index to delete: ")) - 1
                 if 0 <= index < len(tasks):
                     tasks.pop(index)
-                    file = open("todos.txt", 'w')
-                    file.writelines(tasks)
-                    file.close()
+                    with open("todos.txt", "w") as file:
+                        file.writelines(tasks)
                 else:
                     print("Invalid index")
             except ValueError:
@@ -54,6 +52,8 @@ while True:
                 index = int(input("Enter the task index to complete: ")) - 1
                 if 0 <= index < len(tasks):
                     tasks[index] = tasks[index] + " (Completed)"
+                    with open("todos.txt", "w") as file:
+                        file.writelines(tasks)
                 else:
                     print("Invalid index")
             except ValueError:
